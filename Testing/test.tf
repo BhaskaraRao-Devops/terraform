@@ -1,16 +1,13 @@
-resource "aws_instance" "Testing" {
- ami = "ami-0220d79f3f480ecf5"
- instance_type= "t3.micro"
+resource "aws_instance" "Terraform" {
+ count= 4
+ ami = var.ami_id
+ #instance_type= var.instance_type 
+ instance_type= var.env=="dev" ? "t3.micro" : "t3.large"
  vpc_security_group_ids = [aws_security_group.tester.id]
 
 
- tags = {
- Name="Testing ec2"
- Terraform="true"
-    }
+ tags = var.ec2_tags
 }
-
-
 resource "aws_security_group" "tester" {
   name   = "tester"
 
